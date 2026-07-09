@@ -1,0 +1,277 @@
+media:
+  - name: images
+    label: Изображения
+    input: assets/img
+    output: /assets/img
+    categories: [image]
+    rename: safe
+  - name: audio
+    label: Аудио спикерских
+    input: assets/audio/speakers
+    output: /assets/audio/speakers
+    categories: [audio]
+    extensions: [mp3, m4a, wav, ogg]
+    rename: safe
+
+content:
+  - name: site
+    label: Общие настройки сайта
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - { name: siteName, label: Название, type: string }
+      - { name: subtitle, label: Английский подзаголовок, type: string }
+      - { name: description, label: Описание, type: string }
+      - { name: domain, label: Домен, type: string }
+      - { name: slogan, label: Слоган, type: string }
+      - { name: orientationText, label: Текст для кого сообщество, type: text }
+      - { name: disclaimer, label: Дисклеймер, type: text }
+      - { name: contactsIntro, label: Вступление на странице контактов, type: text }
+      - name: socialLinks
+        label: Контакты и соцсети
+        type: object
+        fields:
+          - { name: telegram, label: Telegram, type: string }
+          - { name: vk, label: VK, type: string }
+          - { name: max, label: MAX, type: string }
+          - { name: email, label: Email, type: string }
+
+
+  - name: navigation
+    label: Шапка и меню
+    type: file
+    path: data/navigation.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: label, label: Текст пункта, type: string }
+      - { name: url, label: Ссылка, type: string }
+      - name: children
+        label: Вложенные пункты
+        type: object
+        required: false
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{label}"
+        fields:
+          - { name: id, label: ID, type: string, required: false }
+          - { name: label, label: Текст пункта, type: string }
+          - { name: url, label: Ссылка, type: string }
+
+  - name: pages
+    label: Тексты страниц
+    type: file
+    path: data/pages.json
+    format: json
+    fields:
+      - name: home
+        label: Главная
+        type: object
+        fields:
+          - { name: title, label: Короткое название, type: string }
+          - { name: subtitle, label: Английский подзаголовок, type: string }
+          - { name: heading, label: Заголовок, type: string }
+          - { name: lead, label: Лид, type: text }
+          - { name: slogan, label: Слоган, type: string }
+          - name: primaryButtons
+            label: Кнопки главного экрана
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Текст кнопки, type: string }
+              - { name: url, label: Ссылка, type: string }
+      - name: about
+        label: О нас
+        type: object
+        fields:
+          - { name: title, label: Название страницы, type: string }
+          - { name: heading, label: Заголовок, type: string }
+          - { name: lead, label: Лид, type: text }
+          - name: sections
+            label: Разделы
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{heading}"
+            fields:
+              - { name: heading, label: Заголовок раздела, type: string }
+              - name: paragraphs
+                label: Абзацы
+                type: text
+                list: true
+      - name: groups
+        label: Группы
+        type: object
+        fields:
+          - { name: title, label: Название страницы, type: string }
+          - { name: heading, label: Заголовок, type: string }
+          - { name: lead, label: Лид, type: text }
+      - name: materials
+        label: Материалы
+        type: object
+        fields:
+          - { name: title, label: Название страницы, type: string }
+          - { name: lead, label: Лид, type: text }
+      - name: speakers
+        label: Спикерские
+        type: object
+        fields:
+          - { name: title, label: Название страницы, type: string }
+          - { name: lead, label: Лид, type: text }
+      - name: contacts
+        label: Контакты
+        type: object
+        fields:
+          - { name: title, label: Название страницы, type: string }
+          - { name: lead, label: Лид, type: text }
+
+  - name: schedule
+    label: Расписание
+    type: file
+    path: data/schedule.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: day, label: День недели, type: string }
+      - { name: weekday, label: Номер дня недели, type: number }
+      - { name: time, label: Время, type: string }
+      - { name: groupId, label: ID группы, type: string }
+      - { name: groupName, label: Название группы, type: string }
+      - { name: title, label: Название собрания, type: string }
+      - { name: format, label: 'Формат: online/offline/hybrid', type: string }
+      - { name: formatLabel, label: Формат для сайта, type: string }
+      - { name: city, label: Город, type: string, required: false }
+      - { name: address, label: Адрес, type: string, required: false }
+      - { name: room, label: Кабинет/комната, type: string, required: false }
+      - { name: onlineLinkKey, label: Ключ онлайн-ссылки, type: string, required: false }
+      - { name: note, label: Примечание, type: text, required: false }
+      - { name: mapQuery, label: Адрес для карты, type: string, required: false }
+
+  - name: groups
+    label: Группы
+    type: file
+    path: data/groups.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: name, label: Название, type: string }
+      - { name: slug, label: Страница, type: string }
+      - name: logo
+        label: Логотип
+        type: image
+        options:
+          media: images
+          path: brand
+          extensions: [png, jpg, jpeg, webp, svg]
+          rename: safe
+      - { name: shortDescription, label: Краткое описание, type: text }
+      - { name: lead, label: Основной текст, type: text }
+      - { name: format, label: Формат, type: string }
+      - name: notes
+        label: Заметки
+        type: string
+        list: true
+      - name: news
+        label: Новости группы
+        type: object
+        required: false
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        fields:
+          - { name: date, label: Дата, type: date, required: false }
+          - { name: title, label: Заголовок, type: string }
+          - { name: text, label: Текст, type: text, required: false }
+          - { name: url, label: Ссылка, type: string, required: false }
+          - { name: urlLabel, label: Текст ссылки, type: string, required: false }
+
+  - name: steps
+    label: 12 шагов
+    type: file
+    path: data/steps.json
+    format: json
+    list: true
+    fields:
+      - { name: number, label: Номер шага, type: number }
+      - { name: text, label: Текст шага, type: text }
+
+  - name: materials
+    label: Материалы
+    type: file
+    path: data/materials.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: title, label: Название, type: string }
+      - { name: description, label: Описание, type: text }
+      - { name: type, label: 'Тип: text/pdf/link/daily', type: string }
+      - { name: url, label: URL, type: string }
+      - { name: downloadUrl, label: URL скачивания, type: string, required: false }
+      - { name: isFeatured, label: Важный материал, type: boolean, required: false }
+
+  - name: daily-reflections
+    label: Ежедневные размышления
+    type: file
+    path: data/daily-reflections.json
+    format: json
+    list: true
+    fields:
+      - { name: date, label: Дата MM-DD, type: string, pattern: '^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$' }
+      - { name: day, label: День, type: number }
+      - { name: month, label: Месяц, type: number }
+      - { name: title, label: Название, type: string }
+      - { name: quote, label: Цитата, type: text, required: false }
+      - { name: source, label: Источник, type: string, required: false }
+      - name: body
+        label: Абзацы
+        type: text
+        list: true
+      - name: tags
+        label: Теги
+        type: string
+        list: true
+        required: false
+
+  - name: speaker-recordings
+    label: Спикерские
+    type: file
+    path: data/speaker-recordings.json
+    format: json
+    list: true
+    fields:
+      - { name: id, label: ID, type: string }
+      - { name: title, label: Название, type: string }
+      - { name: date, label: Дата, type: date }
+      - { name: speaker, label: Спикер, type: string }
+      - { name: topic, label: Тема, type: string }
+      - { name: group, label: Группа, type: string, required: false }
+      - { name: duration, label: Длительность, type: string, required: false }
+      - name: audioFile
+        label: Загрузить аудиофайл
+        type: file
+        required: false
+        options:
+          media: audio
+          categories: [audio]
+          extensions: [mp3, m4a, wav, ogg]
+          rename: safe
+      - { name: audioUrl, label: Внешняя ссылка на аудио или путь, type: string, required: false }
+      - name: downloadFile
+        label: Отдельный файл для скачивания
+        type: file
+        required: false
+        options:
+          media: audio
+          categories: [audio]
+          extensions: [mp3, m4a, wav, ogg]
+          rename: safe
+      - { name: downloadUrl, label: Внешняя ссылка скачивания, type: string, required: false }
+      - { name: fileType, label: MIME-тип, type: string, required: false }

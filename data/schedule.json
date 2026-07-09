@@ -1,0 +1,53 @@
+[
+  {
+    "id": "129-tue-2000-moscow-hybrid",
+    "day": "Вторник",
+    "weekday": 2,
+    "time": "20:00",
+    "groupId": "129",
+    "groupName": "129",
+    "title": "Собрание группы «129»",
+    "format": "hybrid",
+    "formatLabel": "Живое собрание + онлайн",
+    "city": "Москва",
+    "address": "Москва, 1-й Колобовский пер., 25, стр. 1",
+    "room": "каб. 6",
+    "onlineLinkKey": "telegram",
+    "note": "Офлайн-встреча проходит по адресу; онлайн-подключение уточняется через общий Telegram.",
+    "mapQuery": "Москва, 1-й Колобовский переулок, 25, строение 1"
+  },
+  {
+    "id": "put-domoy-thu-1800-online",
+    "day": "Четверг",
+    "weekday": 4,
+    "time": "18:00",
+    "groupId": "put-domoy",
+    "groupName": "Путь домой",
+    "title": "Онлайн-собрание группы «Путь домой»",
+    "format": "online",
+    "formatLabel": "Онлайн",
+    "city": "",
+    "address": "",
+    "room": "",
+    "onlineLinkKey": "telegram",
+    "note": "Онлайн-подключение уточняется через общие каналы связи.",
+    "mapQuery": ""
+  },
+  {
+    "id": "put-domoy-fri-1900-step-online",
+    "day": "Пятница",
+    "weekday": 5,
+    "time": "19:00",
+    "groupId": "put-domoy",
+    "groupName": "Путь домой",
+    "title": "Шаговая группа «Путь домой»",
+    "format": "online",
+    "formatLabel": "Онлайн, шаговая группа",
+    "city": "",
+    "address": "",
+    "room": "",
+    "onlineLinkKey": "telegram",
+    "note": "Онлайн шаговая группа.",
+    "mapQuery": ""
+  }
+]

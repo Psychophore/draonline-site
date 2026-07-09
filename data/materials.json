@@ -1,0 +1,20 @@
+[
+  {
+    "id": "daily-reflections",
+    "title": "Ежедневные размышления",
+    "description": "Короткое размышление на каждый день. Сначала раздел может быть заполнен частично.",
+    "type": "daily",
+    "url": "daily-reflections.html",
+    "downloadUrl": "",
+    "isFeatured": true
+  },
+  {
+    "id": "steps-dra",
+    "title": "12 шагов DRA",
+    "description": "Текст 12 шагов DRA на отдельной странице сайта.",
+    "type": "text",
+    "url": "steps.html",
+    "downloadUrl": "",
+    "isFeatured": true
+  }
+]

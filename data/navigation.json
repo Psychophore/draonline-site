@@ -1,0 +1,61 @@
+[
+  {
+    "id": "home",
+    "label": "Главная",
+    "url": "index.html",
+    "children": []
+  },
+  {
+    "id": "about",
+    "label": "О нас",
+    "url": "about.html",
+    "children": []
+  },
+  {
+    "id": "schedule",
+    "label": "Расписание",
+    "url": "schedule.html",
+    "children": []
+  },
+  {
+    "id": "groups",
+    "label": "Группы",
+    "url": "groups.html",
+    "children": [
+      {
+        "id": "put-domoy",
+        "label": "Путь домой",
+        "url": "put-domoy.html"
+      },
+      {
+        "id": "group-129",
+        "label": "129",
+        "url": "group-129.html"
+      }
+    ]
+  },
+  {
+    "id": "steps",
+    "label": "12 шагов",
+    "url": "steps.html",
+    "children": []
+  },
+  {
+    "id": "speakers",
+    "label": "Спикерские",
+    "url": "speakers.html",
+    "children": []
+  },
+  {
+    "id": "materials",
+    "label": "Материалы",
+    "url": "materials.html",
+    "children": []
+  },
+  {
+    "id": "contacts",
+    "label": "Контакты",
+    "url": "contacts.html",
+    "children": []
+  }
+]
