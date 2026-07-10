@@ -4,8 +4,14 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-/assets/*
+/assets/img/*
   Cache-Control: public, max-age=86400
+
+/assets/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=0, must-revalidate
 
 /data/*
   Cache-Control: public, max-age=60
