@@ -14,11 +14,6 @@
   const BLOCKED_PROTOCOLS = /^[a-z][a-z0-9+.-]*:/i;
   const INTERNAL_FILE_PATTERN = /^(?:\.\/|\/)?[\w./#?=&%+,:;@()\-А-Яа-яёЁ]+$/u;
   const DEFAULT_PAGE = 'index.html';
-  const IMAGE_DIMENSIONS = {
-    'assets/img/brand/dra-crest.png': { width: 560, height: 570 },
-    'assets/img/brand/logo-put-domoy.png': { width: 560, height: 332 },
-    'assets/img/brand/logo-129-book.png': { width: 520, height: 542 }
-  };
 
   const SELECTORS = {
     navigation: '[data-navigation]',
@@ -115,7 +110,7 @@
   function mediaAttrs(src = '', attrs = {}) {
     const value = String(src || '').trim();
     if (!isSafeUrl(value)) return null;
-    return { ...IMAGE_DIMENSIONS[value], ...attrs, src: value };
+    return { ...attrs, src: value };
   }
 
   function appendError(holder, message) {
