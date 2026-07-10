@@ -1,8 +1,20 @@
 {
   "name": "draonline-site",
   "compatibility_date": "2026-07-10",
+
   "assets": {
-    "directory": ".",
+    "directory": "./",
     "not_found_handling": "404-page"
-  }
+  },
+
+  "routes": [
+    {
+      "pattern": "draonline.ru",
+      "custom_domain": true
+    },
+    {
+      "pattern": "static.draonline.ru",
+      "custom_domain": true
+    }
+  ]
 }
