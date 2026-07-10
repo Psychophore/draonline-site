@@ -5,13 +5,6 @@ media:
     output: /assets/img
     categories: [image]
     rename: safe
-  - name: audio
-    label: Аудио спикерских
-    input: assets/audio/speakers
-    output: /assets/audio/speakers
-    categories: [audio]
-    extensions: [mp3, m4a, wav, ogg]
-    rename: safe
 
 content:
   - name: site
@@ -136,19 +129,67 @@ content:
     format: json
     list: true
     fields:
-      - { name: id, label: ID, type: string }
-      - { name: day, label: День недели, type: string }
-      - { name: weekday, label: Номер дня недели, type: number }
-      - { name: time, label: Время, type: string }
-      - { name: groupId, label: ID группы, type: string }
-      - { name: groupName, label: Название группы, type: string }
-      - { name: title, label: Название собрания, type: string }
-      - { name: format, label: 'Формат: online/offline/hybrid', type: string }
+      - name: id
+        label: Служебный ID
+        type: string
+        required: true
+        description: Только латиница, цифры и дефисы. Изменение ID создаёт новую запись для сайта.
+        pattern:
+          regex: '^[a-z0-9][a-z0-9-]*$'
+          message: Используйте латинские строчные буквы, цифры и дефисы.
+      - name: day
+        label: День недели
+        type: select
+        required: true
+        options:
+          values: [Понедельник, Вторник, Среда, Четверг, Пятница, Суббота, Воскресенье]
+      - name: weekday
+        label: Номер дня недели
+        type: number
+        required: true
+        description: Понедельник — 1, воскресенье — 7.
+        options:
+          min: 1
+          max: 7
+      - name: time
+        label: Время
+        type: string
+        required: true
+        pattern:
+          regex: '^([01]\d|2[0-3]):[0-5]\d$'
+          message: Укажите время в формате ЧЧ:ММ, например 20:00.
+      - name: groupId
+        label: Группа
+        type: select
+        required: true
+        options:
+          values:
+            - { name: put-domoy, label: Путь домой }
+            - { name: '129', label: '129' }
+      - { name: groupName, label: Название группы, type: string, required: true }
+      - { name: title, label: Название собрания, type: string, required: true }
+      - name: format
+        label: Формат
+        type: select
+        required: true
+        options:
+          values:
+            - { name: online, label: Онлайн }
+            - { name: offline, label: Офлайн }
+            - { name: hybrid, label: Гибрид }
       - { name: formatLabel, label: Формат для сайта, type: string }
       - { name: city, label: Город, type: string, required: false }
       - { name: address, label: Адрес, type: string, required: false }
       - { name: room, label: Кабинет/комната, type: string, required: false }
-      - { name: onlineLinkKey, label: Ключ онлайн-ссылки, type: string, required: false }
+      - name: onlineLinkKey
+        label: Канал онлайн-подключения
+        type: select
+        required: false
+        options:
+          values:
+            - { name: telegram, label: Telegram }
+            - { name: vk, label: VK }
+            - { name: max, label: MAX }
       - { name: note, label: Примечание, type: text, required: false }
       - { name: mapQuery, label: Адрес для карты, type: string, required: false }
 
@@ -209,10 +250,25 @@ content:
     format: json
     list: true
     fields:
-      - { name: id, label: ID, type: string }
-      - { name: title, label: Название, type: string }
-      - { name: description, label: Описание, type: text }
-      - { name: type, label: 'Тип: text/pdf/link/daily', type: string }
+      - name: id
+        label: Служебный ID
+        type: string
+        required: true
+        pattern:
+          regex: '^[a-z0-9][a-z0-9-]*$'
+          message: Используйте латинские строчные буквы, цифры и дефисы.
+      - { name: title, label: Название, type: string, required: true }
+      - { name: description, label: Описание, type: text, required: true }
+      - name: type
+        label: Тип материала
+        type: select
+        required: true
+        options:
+          values:
+            - { name: text, label: Текстовая страница }
+            - { name: pdf, label: PDF }
+            - { name: link, label: Внешняя ссылка }
+            - { name: daily, label: Ежедневные размышления }
       - { name: url, label: URL, type: string }
       - { name: downloadUrl, label: URL скачивания, type: string, required: false }
       - { name: isFeatured, label: Важный материал, type: boolean, required: false }
@@ -247,31 +303,50 @@ content:
     format: json
     list: true
     fields:
-      - { name: id, label: ID, type: string }
-      - { name: title, label: Название, type: string }
-      - { name: date, label: Дата, type: date }
-      - { name: speaker, label: Спикер, type: string }
-      - { name: topic, label: Тема, type: string }
+      - name: id
+        label: Служебный ID
+        type: string
+        required: true
+        description: Только латиница, цифры и дефисы.
+        pattern:
+          regex: '^[a-z0-9][a-z0-9-]*$'
+          message: Используйте латинские строчные буквы, цифры и дефисы.
+      - { name: title, label: Название, type: string, required: true }
+      - { name: date, label: Дата, type: date, required: true }
+      - { name: speaker, label: Спикер, type: string, required: true }
+      - { name: topic, label: Тема, type: string, required: true }
       - { name: group, label: Группа, type: string, required: false }
-      - { name: duration, label: Длительность, type: string, required: false }
-      - name: audioFile
-        label: Загрузить аудиофайл
-        type: file
+      - name: duration
+        label: Длительность
+        type: string
+        required: false
+        description: Например 48:15 или 1:12:30.
+        pattern:
+          regex: '^$|^(?:\d+:)?[0-5]?\d:[0-5]\d$'
+          message: Используйте формат ММ:СС или Ч:ММ:СС.
+      - name: audioUrl
+        label: Ссылка на аудио в R2
+        type: string
+        required: true
+        description: Публичный HTTPS-адрес файла в Cloudflare R2. Аудио в GitHub не загружается.
+        pattern:
+          regex: '^https://.+'
+          message: Укажите полный HTTPS-адрес файла.
+      - name: downloadUrl
+        label: Отдельная ссылка для скачивания
+        type: string
+        required: false
+        description: Оставьте пустым, если скачивание должно идти по той же ссылке, что и прослушивание.
+        pattern:
+          regex: '^$|^https://.+'
+          message: Укажите полный HTTPS-адрес или оставьте поле пустым.
+      - name: fileType
+        label: MIME-тип
+        type: select
         required: false
         options:
-          media: audio
-          categories: [audio]
-          extensions: [mp3, m4a, wav, ogg]
-          rename: safe
-      - { name: audioUrl, label: Внешняя ссылка на аудио или путь, type: string, required: false }
-      - name: downloadFile
-        label: Отдельный файл для скачивания
-        type: file
-        required: false
-        options:
-          media: audio
-          categories: [audio]
-          extensions: [mp3, m4a, wav, ogg]
-          rename: safe
-      - { name: downloadUrl, label: Внешняя ссылка скачивания, type: string, required: false }
-      - { name: fileType, label: MIME-тип, type: string, required: false }
+          values:
+            - { name: audio/mpeg, label: MP3 — audio/mpeg }
+            - { name: audio/mp4, label: M4A — audio/mp4 }
+            - { name: audio/ogg, label: OGG — audio/ogg }
+            - { name: audio/wav, label: WAV — audio/wav }
