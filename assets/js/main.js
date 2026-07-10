@@ -38,7 +38,7 @@
   async function loadJson(file) {
     if (jsonCache.has(file)) return jsonCache.get(file);
 
-    const response = await fetch(DATA_BASE + file, { cache: 'no-cache' });
+    const response = await fetch(DATA_BASE + file);
     if (!response.ok) throw new Error(`Не удалось загрузить ${file}`);
 
     const data = await response.json();
