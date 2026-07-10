@@ -325,10 +325,10 @@ content:
           regex: '^$|^(?:\d+:)?[0-5]?\d:[0-5]\d$'
           message: Используйте формат ММ:СС или Ч:ММ:СС.
       - name: audioUrl
-        label: Ссылка на аудио в R2
+        label: Ссылка на аудио (GitHub Releases)
         type: string
         required: true
-        description: Публичный HTTPS-адрес файла в Cloudflare R2. Аудио в GitHub не загружается.
+        description: Публичный HTTPS-адрес release asset. Рекомендуется отдельный репозиторий Psychophore/draonline-media. Аудио не сохраняется в Git-истории сайта.
         pattern:
           regex: '^https://.+'
           message: Укажите полный HTTPS-адрес файла.
