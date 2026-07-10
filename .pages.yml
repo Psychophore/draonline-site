@@ -20,7 +20,6 @@ content:
       - { name: slogan, label: Слоган, type: string }
       - { name: orientationText, label: Текст для кого сообщество, type: text }
       - { name: disclaimer, label: Дисклеймер, type: text }
-      - { name: contactsIntro, label: Вступление на странице контактов, type: text }
       - name: socialLinks
         label: Контакты и соцсети
         type: object
