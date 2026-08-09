@@ -5,16 +5,5 @@
   "assets": {
     "directory": "./",
     "not_found_handling": "404-page"
-  },
-
-  "routes": [
-    {
-      "pattern": "draonline.ru",
-      "custom_domain": true
-    },
-    {
-      "pattern": "static.draonline.ru",
-      "custom_domain": true
-    }
-  ]
+  }
 }
