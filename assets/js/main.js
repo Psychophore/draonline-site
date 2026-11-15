@@ -307,7 +307,10 @@
   }
 
   function scheduleCard(item) {
-    const address = [item.address, item.room].filter(Boolean).join(', ');
+    const hasPhysicalLocation = ['offline', 'hybrid'].includes(item.format) && item.address;
+    const address = hasPhysicalLocation ? [item.address, item.room].filter(Boolean).join(', ') : '';
+    const mapQuery = address ? encodeURIComponent(item.mapQuery || item.address) : '';
+    const mapLink = mapQuery ? linkAttrs(`https://yandex.ru/maps/?text=${mapQuery}&z=16`) : null;
 
     return el('article', { class: 'meeting-card' }, [
       el('div', { class: 'meeting-time' }, [text(item.time, '—')]),
@@ -318,6 +321,7 @@
           el('span', { class: `badge ${formatClass(item.format)}`.trim() }, [text(item.formatLabel || item.format, 'Формат')])
         ]),
         address ? el('p', {}, [el('strong', {}, ['Адрес: ']), address]) : null,
+        mapLink ? el('p', {}, [el('a', mapLink, ['Открыть в Яндекс Картах'])]) : null,
         item.note ? el('p', {}, [item.note]) : null
       ])
     ]);
