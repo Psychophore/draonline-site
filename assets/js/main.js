@@ -664,7 +664,9 @@
           .filter(([date]) => date)
       );
       const params = new URLSearchParams(location.search);
-      let selected = isMMDD(params.get('date')) ? params.get('date') : getTodayMMDD();
+      const requestedDate = params.get('date');
+      let followingToday = !isMMDD(requestedDate);
+      let selected = followingToday ? getTodayMMDD() : requestedDate;
       let selectedMonth = Number(selected.slice(0, 2));
       const monthSelect = document.querySelector('[data-daily-month]');
       const calendar = document.querySelector('[data-daily-calendar]');
@@ -705,7 +707,8 @@
         }
       }
 
-      function selectDate(date, push = true) {
+      function selectDate(date, push = true, followToday = false) {
+        followingToday = followToday;
         selected = isMMDD(date) ? date : getTodayMMDD();
         selectedMonth = Number(selected.slice(0, 2));
         if (push) history.replaceState(null, '', `daily-reflections.html?date=${selected}`);
@@ -727,8 +730,23 @@
 
       document.querySelector('[data-daily-prev]')?.addEventListener('click', () => selectDate(shiftDate(selected, -1)));
       document.querySelector('[data-daily-next]')?.addEventListener('click', () => selectDate(shiftDate(selected, 1)));
-      document.querySelector('[data-daily-today]')?.addEventListener('click', () => selectDate(getTodayMMDD()));
-      selectDate(selected, false);
+      function selectToday() {
+        // Read the visitor's local calendar date afresh, even after a tab was left open.
+        selectDate(getTodayMMDD(), true, true);
+      }
+
+      function refreshToday() {
+        if (followingToday && selected !== getTodayMMDD()) selectToday();
+      }
+
+      document.querySelector('[data-daily-today]')?.addEventListener('click', selectToday);
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) refreshToday();
+      });
+      window.addEventListener('focus', refreshToday);
+      // Keep the current reading correct across midnight without moving a manually chosen date.
+      window.setInterval(refreshToday, 30000);
+      selectDate(selected, false, followingToday);
     } catch (error) {
       console.warn(error);
       appendError(currentHolder, 'Не удалось загрузить ежедневные размышления.');
