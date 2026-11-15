@@ -130,6 +130,8 @@ main {
 }
 .section-card.emphasis { background: var(--paper); }
 .section-card.notice { border-left: 10px solid var(--orange); }
+.section-card.home-announcement { padding: 14px 20px; }
+.home-announcement p { margin: 0; }
 
 .hero-grid {
   display: grid;
