@@ -3,6 +3,12 @@
 
   const DATA_BASE = 'data/';
   const jsonCache = new Map();
+  let scheduleRequest;
+  const MEETING_FORMATS = new Map([
+    ['online', 'Онлайн'],
+    ['offline', 'Очно'],
+    ['hybrid', 'Гибрид']
+  ]);
 
   const MONTH_NAMES = [
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -36,10 +42,10 @@
     contactLinks: '[data-contact-links]'
   };
 
-  async function loadJson(file) {
+  async function loadJson(file, options) {
     if (jsonCache.has(file)) return jsonCache.get(file);
 
-    const response = await fetch(DATA_BASE + file);
+    const response = await fetch(DATA_BASE + file, options);
     if (!response.ok) throw new Error(`Не удалось загрузить ${file}`);
 
     const data = await response.json();
@@ -303,7 +309,11 @@
 
   function formatClass(format) {
     const value = text(format, 'online').toLowerCase();
-    return ['online', 'offline', 'hybrid'].includes(value) ? `format-${value}` : '';
+    return MEETING_FORMATS.has(value) ? `format-${value}` : '';
+  }
+
+  function meetingFormat(item) {
+    return MEETING_FORMATS.get(item.format) || text(item.formatLabel || item.format, 'Формат не указан');
   }
 
   function scheduleCard(item) {
@@ -318,7 +328,7 @@
         el('h3', {}, [text(item.title, 'Собрание')]),
         el('div', { class: 'badges' }, [
           el('span', { class: 'badge' }, [text(item.groupName || item.groupId, 'DRA')]),
-          el('span', { class: `badge ${formatClass(item.format)}`.trim() }, [text(item.formatLabel || item.format, 'Формат')])
+          el('span', { class: `badge ${formatClass(item.format)}`.trim() }, [meetingFormat(item)])
         ]),
         address ? el('p', {}, [el('strong', {}, ['Адрес: ']), address]) : null,
         mapLink ? el('p', {}, [el('a', mapLink, ['Открыть в Яндекс Картах'])]) : null,
@@ -333,6 +343,16 @@
       if (weekdayDiff) return weekdayDiff;
       return text(a.time).localeCompare(text(b.time), 'ru');
     });
+  }
+
+  function loadSchedule() {
+    if (!scheduleRequest) {
+      scheduleRequest = loadJson('schedule.json', { cache: 'no-cache' }).then(sortSchedule).catch(error => {
+        scheduleRequest = undefined;
+        throw error;
+      });
+    }
+    return scheduleRequest;
   }
 
   function groupScheduleByDay(items) {
@@ -365,7 +385,7 @@
     if (!holders.length && !home) return;
 
     try {
-      const schedule = sortSchedule(await loadJson('schedule.json'));
+      const schedule = await loadSchedule();
 
       holders.forEach(holder => {
         const filter = holder.dataset.schedule;
@@ -391,8 +411,11 @@
     return attrs ? el('a', attrs, [label]) : null;
   }
 
-  function groupCard(group, mode = '') {
+  function groupCard(group, meetings, mode) {
     const image = group.logo ? mediaAttrs(group.logo, { alt: `Логотип группы ${text(group.name, 'DRA')}` }) : null;
+    const meetingTimes = meetings.map(item => el('li', {}, [
+      `${text(item.day, 'Без дня')}, ${text(item.time, '—')} · ${meetingFormat(item)}`
+    ]));
     const actions = mode === 'full'
       ? [
         groupAction(group.slug, 'О группе', true),
@@ -405,7 +428,7 @@
       image ? el('img', image) : null,
       el('h3', {}, [text(group.name, 'Группа')]),
       group.shortDescription ? el('p', {}, [group.shortDescription]) : null,
-      group.format && mode === 'full' ? el('p', {}, [el('strong', {}, ['Формат: ']), group.format]) : null,
+      meetingTimes.length ? el('ul', { class: 'group-meetings', 'aria-label': 'Расписание' }, meetingTimes) : null,
       actions.length ? el('div', { class: 'card-actions' }, actions) : null
     ]);
   }
@@ -438,12 +461,20 @@
     if (!overview && !page && !newsHolders.length) return;
 
     try {
-      const groups = list(await loadJson('groups.json'));
+      const [groupData, schedule] = await Promise.all([
+        loadJson('groups.json'),
+        overview ? loadSchedule().catch(() => null) : null
+      ]);
+      const groups = list(groupData);
 
       if (overview) {
         clear(overview);
         const mode = overview.dataset.groupsOverview || '';
-        groups.forEach(group => overview.append(groupCard(group, mode)));
+        groups.forEach(group => {
+          const meetings = list(schedule).filter(item => item.groupId === group.id);
+          overview.append(groupCard(group, meetings, mode));
+        });
+        if (!schedule) overview.append(el('div', { class: 'empty-state', role: 'alert' }, ['Не удалось загрузить расписание.']));
       }
 
       if (page) {
@@ -460,8 +491,7 @@
           el('div', {}, [
             el('p', { class: 'eyebrow' }, ['Группа DRA']),
             el('h1', {}, [text(group.name, 'Группа')]),
-            group.lead ? el('p', { class: 'lead' }, [group.lead]) : null,
-            group.format ? el('p', {}, [el('strong', {}, ['Формат: ']), group.format]) : null
+            group.lead ? el('p', { class: 'lead' }, [group.lead]) : null
           ])
         ]));
 
