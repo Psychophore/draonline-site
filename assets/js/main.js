@@ -21,6 +21,7 @@
     footerBrand: '[data-footer-brand]',
     socialLinks: '[data-social-links]',
     disclaimer: '[data-disclaimer]',
+    homeAnnouncement: '[data-home-announcement]',
     homeContent: '[data-home-content]',
     homeSchedule: '[data-home-schedule]',
     pageContent: '[data-page-content]',
@@ -737,6 +738,13 @@
       const pages = await loadJson('pages.json');
       const data = pages.home;
       if (!data) return;
+
+      const announcement = document.querySelector(SELECTORS.homeAnnouncement);
+      const announcementText = text(data.announcement?.text).trim();
+      if (announcement && data.announcement?.enabled === true && announcementText) {
+        announcement.append(el('p', {}, [announcementText]));
+        announcement.hidden = false;
+      }
 
       const logo = holder.querySelector('.hero-logo');
       clear(holder);
