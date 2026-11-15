@@ -215,6 +215,7 @@ p { margin: 0 0 14px; }
 }
 .group-card img { max-height: 155px; object-fit: contain; display: block; margin: 0 auto 14px; }
 .group-card a, .feature-grid a, .material-actions a { font-weight: 900; }
+.group-meetings { margin: 0 0 14px; padding-left: 20px; }
 .card-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 .feature-grid a {
   display: block;

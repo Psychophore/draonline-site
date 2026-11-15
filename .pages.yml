@@ -180,9 +180,8 @@ content:
         options:
           values:
             - { name: online, label: Онлайн }
-            - { name: offline, label: Офлайн }
+            - { name: offline, label: Очно }
             - { name: hybrid, label: Гибрид }
-      - { name: formatLabel, label: Формат для сайта, type: string }
       - { name: city, label: Город, type: string, required: false }
       - { name: address, label: Адрес, type: string, required: false }
       - { name: room, label: Кабинет/комната, type: string, required: false }
@@ -216,9 +215,8 @@ content:
           path: brand
           extensions: [png, jpg, jpeg, webp, svg]
           rename: safe
-      - { name: shortDescription, label: Краткое описание, type: text }
+      - { name: shortDescription, label: Краткое описание, type: text, required: false }
       - { name: lead, label: Основной текст, type: text }
-      - { name: format, label: Формат, type: string }
       - name: notes
         label: Заметки
         type: string
