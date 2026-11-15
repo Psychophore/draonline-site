@@ -68,6 +68,12 @@ content:
           - { name: heading, label: Заголовок, type: string }
           - { name: lead, label: Лид, type: text }
           - { name: slogan, label: Слоган, type: string }
+          - name: announcement
+            label: Анонс
+            type: object
+            fields:
+              - { name: enabled, label: Показывать анонс, type: boolean, default: false }
+              - { name: text, label: Текст анонса, type: text, required: false }
           - name: primaryButtons
             label: Кнопки главного экрана
             type: object
