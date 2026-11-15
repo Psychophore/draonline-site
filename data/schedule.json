@@ -30,10 +30,10 @@
     "note": "Онлайн-подключение уточняется через общие каналы связи."
   },
   {
-    "id": "put-domoy-fri-1900-step-online",
-    "day": "Пятница",
-    "weekday": 5,
-    "time": "19:00",
+    "id": "put-domoy-sat-1500-step-online",
+    "day": "Суббота",
+    "weekday": 6,
+    "time": "15:00",
     "groupId": "put-domoy",
     "groupName": "Путь домой",
     "title": "Шаговая группа «Путь домой»",
